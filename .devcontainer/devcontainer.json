@@ -1,10 +1,13 @@
 {
-    "name": "Attendance Portal Full Stack",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "app",
-    "workspaceFolder": "/workspaces/attendance-portal",
+    "name": "Attendance Portal",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {}
+        "ghcr.io/devcontainers/features/postgresql:1": {
+            "version": "latest",
+            "username": "postgres",
+            "password": "password123",
+            "database": "attendance_portal"
+        }
     },
     "customizations": {
         "vscode": {
@@ -18,7 +21,7 @@
     "forwardPorts": [
         3000,
         3001,
-        5555
+        5432
     ],
     "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
