@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
-    network_mode: service:db
+    # network_mode: service:db # REMOVED: Causes connectivity issues in Codespaces
 
   db:
     image: postgres:15-alpine
@@ -19,6 +19,13 @@ services:
       POSTGRES_DB: attendance_portal
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+        # Optional: Verify if needed for app? No, app connects via internal network.
+        # But if we want to connect from local VS Code to DB, this is useful.
+        # Wait, if we are in 'app' container, we use 'db:5432'.
+        # This port mapping exposes it to the HOST (the Codespace VM or Local Machine).
+        # It's safer to keep it for debugging.
 
 volumes:
   postgres-data:
