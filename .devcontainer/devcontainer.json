@@ -2,9 +2,9 @@
     "name": "Attendance Portal",
     "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
     "features": {
-        "ghcr.io/devcontainers/features/postgresql:1": {
+        "ghcr.io/devcontainers/features/mysql:1": {
             "version": "latest",
-            "username": "postgres",
+            "username": "root",
             "password": "password123",
             "database": "attendance_portal"
         }
