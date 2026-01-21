@@ -12,7 +12,7 @@ BACKEND_PID=$!
 echo "Backend started (PID: $BACKEND_PID)"
 
 echo "Starting Frontend..."
-cd ../frontend && npm run dev > frontend.log 2>&1 &
+cd frontend && npm run dev > frontend.log 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend started (PID: $FRONTEND_PID)"
 
