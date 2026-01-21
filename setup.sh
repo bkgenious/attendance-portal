@@ -6,7 +6,20 @@ echo "   Attendance Portal Setup (Failsafe)   "
 echo "========================================"
 
 echo "[1/4] Checking Database..."
+if ! command -v mysql &> /dev/null; then
+    echo "      MySQL not found. Installing..."
+    sudo apt-get update
+    sudo apt-get install -y mysql-server
+fi
+
+# Start MySQL
 sudo service mysql start
+
+# Configuration for default Codespace (root user often has no password or needs one set)
+# We will attempt to set the password to 'password123' to match our config
+echo "      Configuring MySQL Password..."
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password123';" 2>/dev/null || true
+
 # Wait loop
 count=0
 while ! mysqladmin ping -h localhost --silent; do
