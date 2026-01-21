@@ -63,6 +63,7 @@ model User {
   auditLogs       AuditLog[]
   payslips        Payslip[]
   sessions        Session[]
+  passwordResetRequests PasswordResetRequest[]
 
   @@map("users")
 }
