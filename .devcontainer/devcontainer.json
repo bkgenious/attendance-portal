@@ -1,0 +1,24 @@
+{
+    "name": "Attendance Portal Full Stack",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspaces/attendance-portal",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "Prisma.prisma"
+            ]
+        }
+    },
+    "forwardPorts": [
+        3000,
+        3001,
+        5555
+    ],
+    "postCreateCommand": "bash .devcontainer/post-create.sh"
+}
