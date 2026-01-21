@@ -1,0 +1,13 @@
+
+> attendance-portal-backend@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/app.ts
+
+[INFO] 23:43:30 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+ReferenceError: holidayRoutes is not defined
+    at buildApp (E:\Attendance Portal\attendance-portal\backend\src\app.ts:91:24)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at start (E:\Attendance Portal\attendance-portal\backend\src\app.ts:112:25)
+[INFO] 23:44:28 Restarting: E:\Attendance Portal\attendance-portal\backend\src\app.ts has been modified
+[18:14:30 UTC] [32mINFO[39m: [36mServer listening at http://0.0.0.0:3001[39m
+[18:14:30 UTC] [32mINFO[39m: [36mServer running at http://localhost:3001[39m
+^C^C

@@ -1,0 +1,235 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Role {
+  SUPER_ADMIN
+  SYSTEM_ADMIN
+  CEO
+  HR
+  EMPLOYEE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LATE
+  ON_LEAVE
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum AuditAction {
+  LOGIN
+  LOGOUT
+  CREATE
+  UPDATE
+  DELETE
+  OVERRIDE
+}
+
+// Models
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String // Hashed
+  role      Role     @default(EMPLOYEE)
+  isActive  Boolean  @default(true)
+  featureOverrides Json? // Per-user feature toggle overrides
+  preferences     Json?  // UI preferences (dark mode, etc)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  employeeProfile EmployeeProfile?
+  attendances     Attendance[]
+  leaveRequests   LeaveRequest[]
+  auditLogs       AuditLog[]
+  payslips        Payslip[]
+  sessions        Session[]
+
+  @@map("users")
+}
+
+model EmployeeProfile {
+  id             String  @id @default(uuid())
+  userId         String  @unique
+  user           User    @relation(fields: [userId], references: [id])
+  firstName      String
+  lastName       String
+  employeeId     String  @unique
+  department     String?
+  designation    String?
+  phone          String?
+  address        String? @db.Text
+  joiningDate    DateTime?
+  baseSalary     Float   @default(0) // Annual or Monthly? Assuming Monthly for simplicity
+  currency       String  @default("USD")
+
+  @@map("employee_profiles")
+  @@index([department])
+}
+
+model Attendance {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  date        DateTime         @db.Date // Store only the date part
+  checkIn     DateTime?
+  checkOut    DateTime?
+  status      AttendanceStatus @default(ABSENT)
+  isFinalized Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  breaks Break[]
+
+  @@unique([userId, date]) // One attendance record per user per day
+  @@index([date])
+  @@map("attendances")
+}
+
+model Break {
+  id           String     @id @default(uuid())
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id])
+  startTime    DateTime
+  endTime      DateTime?
+  durationMins Int?       // Calculated on close
+  
+  @@map("breaks")
+}
+
+model LeaveRequest {
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  startDate   DateTime    @db.Date
+  endDate     DateTime    @db.Date
+  reason      String      @db.Text
+  status      LeaveStatus @default(PENDING)
+  approvedBy  String?     // User ID of approver
+  rejectionReason String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("leave_requests")
+  @@index([userId])
+  @@index([status])
+}
+
+model AuditLog {
+  id        String      @id @default(uuid())
+  userId    String?     // Nullable for system actions
+  user      User?       @relation(fields: [userId], references: [id])
+  action    AuditAction
+  resource  String      // e.g., "Attendance", "User"
+  resourceId String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+
+  @@map("audit_logs")
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Payslip {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  month       Int
+  year        Int
+  totalDays   Int
+  presentDays Float
+  absentDays  Float
+  leaveDays   Float
+  salary      Float
+  deductions  Float
+  netPay      Float
+  generatedBy String // User ID
+  generatedAt DateTime @default(now())
+
+  @@unique([userId, month, year])
+  @@map("payslips")
+}
+
+model Holiday {
+  id          String   @id @default(uuid())
+  date        DateTime @db.Date @unique
+  name        String
+  description String?
+  isOptional  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("holidays")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @db.Text // Store the JWT or a hash of it. Using Text for length.
+  isValid   Boolean  @default(true)
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  lastActive DateTime @default(now())
+
+  @@map("sessions")
+}
+
+model SystemSettings {
+  id             String   @id @default(uuid())
+  companyName    String   @default("My Company")
+  workStartTime  String   @default("09:00") // HH:mm
+  workEndTime    String   @default("18:00") // HH:mm
+  lateThreshold  Int      @default(15)      // Minutes
+  halfDayThreshold Int    @default(4)       // Hours
+  workingDays    Json     @default("[1,2,3,4,5]") // Mon-Fri
+  currency       String   @default("USD")
+  updatedAt      DateTime @updatedAt
+
+  @@map("system_settings")
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model PasswordResetRequest {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  newPasswordHash String
+  status          RequestStatus @default(PENDING)
+  approvedBy      String?       // ID of the admin who approved
+  rejectionReason String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("password_reset_requests")
+  @@index([userId])
+  @@index([status])
+}

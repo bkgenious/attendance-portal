@@ -1,0 +1,8 @@
+src/modules/settings/settings.routes.ts(13,48): error TS2339: Property 'hasRole' does not exist on type 'FastifyInstance<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, FastifyBaseLogger, FastifyTypeProviderDefault>'.
+src/modules/settings/settings.routes.ts(29,48): error TS2339: Property 'hasRole' does not exist on type 'FastifyInstance<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, FastifyBaseLogger, FastifyTypeProviderDefault>'.
+src/modules/settings/settings.service.ts(40,13): error TS2322: Type 'Partial<{ id: string; companyName: string; workStartTime: string; workEndTime: string; lateThreshold: number; halfDayThreshold: number; workingDays: JsonValue; currency: string; updatedAt: Date; }>' is not assignable to type '(Without<SystemSettingsUpdateInput, SystemSettingsUncheckedUpdateInput> & SystemSettingsUncheckedUpdateInput) | (Without<...> & SystemSettingsUpdateInput)'.
+  Type 'Partial<{ id: string; companyName: string; workStartTime: string; workEndTime: string; lateThreshold: number; halfDayThreshold: number; workingDays: JsonValue; currency: string; updatedAt: Date; }>' is not assignable to type 'Without<SystemSettingsUncheckedUpdateInput, SystemSettingsUpdateInput> & SystemSettingsUpdateInput'.
+    Type 'Partial<{ id: string; companyName: string; workStartTime: string; workEndTime: string; lateThreshold: number; halfDayThreshold: number; workingDays: JsonValue; currency: string; updatedAt: Date; }>' is not assignable to type 'SystemSettingsUpdateInput'.
+      Types of property 'workingDays' are incompatible.
+        Type 'JsonValue | undefined' is not assignable to type 'JsonNull | InputJsonValue | undefined'.
+          Type 'null' is not assignable to type 'JsonNull | InputJsonValue | undefined'.

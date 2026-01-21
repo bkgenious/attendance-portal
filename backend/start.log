@@ -1,0 +1,13 @@
+PrismaClientInitializationError: error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "mysql"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at t (E:\Attendance Portal\attendance-portal\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at async prismaPlugin (E:\Attendance Portal\attendance-portal\backend\dist\plugins\prisma.js:12:5) {
+  clientVersion: '5.22.0',
+  errorCode: 'P1012'
+}

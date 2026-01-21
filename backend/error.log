@@ -1,0 +1,11 @@
+Error: unable to determine transport target for "pino-pretty"
+    at fixTarget (E:\Attendance Portal\attendance-portal\backend\node_modules\pino\lib\transport.js:160:13)
+    at transport (E:\Attendance Portal\attendance-portal\backend\node_modules\pino\lib\transport.js:130:22)
+    at normalizeArgs (E:\Attendance Portal\attendance-portal\backend\node_modules\pino\lib\tools.js:358:16)
+    at pino (E:\Attendance Portal\attendance-portal\backend\node_modules\pino\pino.js:91:28)
+    at createPinoLogger (E:\Attendance Portal\attendance-portal\backend\node_modules\fastify\lib\logger.js:42:14)
+    at createLogger (E:\Attendance Portal\attendance-portal\backend\node_modules\fastify\lib\logger.js:101:18)
+    at fastify (E:\Attendance Portal\attendance-portal\backend\node_modules\fastify\fastify.js:135:33)
+    at buildApp (E:\Attendance Portal\attendance-portal\backend\src\app.ts:20:24)
+    at start (E:\Attendance Portal\attendance-portal\backend\src\app.ts:95:39)
+    at Object.<anonymous> (E:\Attendance Portal\attendance-portal\backend\src\app.ts:104:5)
