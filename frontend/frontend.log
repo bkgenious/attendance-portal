@@ -1,0 +1,14 @@
+
+> attendance-portal-frontend@1.0.0 dev
+> next dev
+
+   ▲ Next.js 14.1.0
+   - Local:        http://localhost:3000
+
+ ✓ Ready in 3.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.3s (586 modules)
+ ✓ Compiled in 423ms (297 modules)
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1220ms (1455 modules)
+[?25h
